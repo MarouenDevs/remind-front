@@ -30,7 +30,7 @@ class Menu extends Component {
                         </NavItem>
 
                     </Nav>
-                    <Navbar.Form pullright>
+                    <Navbar.Form >
                         <FormGroup>
                             <FormControl type="text" placeholder="Search" />
                         </FormGroup>{' '}

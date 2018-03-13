@@ -1,26 +1,51 @@
 import React, {Component} from 'react';
-import Panel from "react-bootstrap/es/Panel";
-import {Table} from "react-bootstrap";
 import PageHeader from "react-bootstrap/es/PageHeader";
-import Glyphicon from "react-bootstrap/es/Glyphicon";
-import Button from "react-bootstrap/es/Button";
+import Note from "../components/Note";
 
 
 class Dashbord extends Component {
     constructor(props) {
         super(props);
+          const d= new Date();
+        this.state = {
+            notes: [{
+                id: 1,
+                title: "title 1",
+                content: "my content 1",
+                updateAt: d.toDateString(),
+                color: 'lazur',
+            },
+                {
+                    id: 2,
+                    title: "title 1",
+                    content: "my content 1",
+                    updateAt: d.toDateString(),
+                    color: 'red',
+
+                },
+                {
+                    id: 4,
+                    title: "title 1",
+                    content: "my content 1",
+                    updateAt: d.toDateString(),
+                    color: 'red',
+
+                },
+                {
+                    id: 5,
+                    title: "title 1",
+                    content: "my content 1",
+                    updateAt: d.toDateString(),
+                    color: 'yellow',
+
+                }]
+        }
 
 
     }
 
-    registerSocket(state, cb) {
+    componentWillMount() {
 
-        this.props.socket.on('rider', function (data) {
-            let riders = state.riders;
-            riders[data.rider_id] = data;
-            cb.setState(riders);
-            localStorage.setItem('state', JSON.stringify(cb.state));
-        });
     }
 
     render() {
@@ -36,36 +61,16 @@ class Dashbord extends Component {
                 <div className="col-md-12">
 
 
-                        <div className="row">
-                            <ul className="notes">
-                                <li>
-                                    <div className="rotate-1 lazur-bg">
-                                        <small>12:03:28 12-04-2014</small>
-                                        <h4>Awesome title</h4>
-                                        <p>The years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
-                                        <Button bsSize="xsmall">
-                                            <Glyphicon glyph="star" /> Star
-                                        </Button>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="rotate-2 red-bg">
-                                        <small>12:03:28 12-04-2014</small>
-                                        <h4>Awesome date</h4>
-                                        <p>The years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
-                                        <a href="#" className="text-danger pull-right"><i className="fa fa-trash-o "></i></a>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="rotate-1 yellow-bg">
-                                        <small>12:03:28 12-04-2014</small>
-                                        <h4>Awesome project</h4>
-                                        <p>The years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
-                                        <a href="#" className="text-danger pull-right"><i className="fa fa-trash-o "></i></a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
+                    <div className="row">
+                        <ul className="notes">
+
+                            {this.state.notes.map((note) => (
+                                <Note key={note.id} title={note.title} content={note.content} color={note.color}
+                                      updateAt={note.updateAt}/>))}
+
+
+                        </ul>
+                    </div>
 
 
                 </div>
