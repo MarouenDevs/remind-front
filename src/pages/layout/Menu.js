@@ -30,12 +30,7 @@ class Menu extends Component {
                         </NavItem>
 
                     </Nav>
-                    <Navbar.Form >
-                        <FormGroup>
-                            <FormControl type="text" placeholder="Search" />
-                        </FormGroup>{' '}
-                        <Button type="submit">Submit</Button>
-                    </Navbar.Form>
+
 
 
                 </Navbar.Collapse>
