@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Modal from "react-bootstrap/es/Modal";
-import Button from "react-bootstrap/es/Button";
 
+import {Form, Text, Radio, RadioGroup, Select, Checkbox, TextArea} from 'react-form';
 export default class AddNote extends Component {
 
 
@@ -12,18 +12,59 @@ export default class AddNote extends Component {
         };
     }
     render() {
+
+
         const {show, handleClose} = this.props;
+
+        const colorOptions = [
+            {
+                label: 'blue',
+                value: 'lazur',
+            },
+            {
+                label: 'yellow',
+                value: 'yellow',
+            },
+            {
+                label: "red",
+                value: 'red',
+            },
+        ]
         return (<Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Modal heading</Modal.Title>
+                <Modal.Title>Add new note</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <h4>Add new note</h4>
 
+                <Form onSubmit={submittedValues => this.setState({ submittedValues })}>
+                    {formApi => (
+                        <form onSubmit={formApi.submitForm} id="form2">
+                            <div class="form-group">
+                            <label htmlFor="firstName">Title</label>
+                            <Text field="firstName" id="firstName" className="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label htmlFor="content">content</label>
+                                <TextArea field="content" id="content" className="form-control" />
+                            </div>
+
+                            <div class="form-group">
+                                <label htmlFor="color">note color</label>
+                                <Select field="color" id="color" options={colorOptions} className="mb-4 form-control" />
+                            </div>
+
+
+
+                            <button type="submit" className="mb-4 btn btn-primary">
+                                Add
+                            </button>
+                        </form>
+                    )}
+                </Form>
 
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={handleClose}>Close</Button>
+
             </Modal.Footer>
         </Modal>);
     }

@@ -22,6 +22,11 @@ background: aliceblue;
   font-size: 1.5em;
 }
 
+.tools {
+
+  position:absolute;
+  bottom: 1px;
+}
 
 .App-intro {
   font-size: large;
