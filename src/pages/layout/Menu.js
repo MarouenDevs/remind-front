@@ -1,9 +1,6 @@
 import React, {Component} from 'react';
-
 import { Nav, Navbar, NavItem } from "react-bootstrap";
-import FormGroup from "react-bootstrap/es/FormGroup";
-import Button from "react-bootstrap/es/Button";
-import FormControl from "react-bootstrap/es/FormControl";
+
 
 
 class Menu extends Component {
@@ -30,9 +27,6 @@ class Menu extends Component {
                         </NavItem>
 
                     </Nav>
-
-
-
                 </Navbar.Collapse>
             </Navbar>
 

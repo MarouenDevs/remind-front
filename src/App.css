@@ -21,7 +21,13 @@ background: aliceblue;
 .App-title {
   font-size: 1.5em;
 }
+.error-msg{
+  color:red;
+}
 
+.requiredElem{
+  color:red;
+}
 .tools {
 
   position:absolute;

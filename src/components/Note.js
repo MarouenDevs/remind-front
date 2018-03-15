@@ -1,7 +1,7 @@
 import React from 'react';
 import Glyphicon from "react-bootstrap/es/Glyphicon";
 import PropTypes from 'prop-types';
-import ButtonGroup from "react-bootstrap/es/ButtonGroup";
+
 
 /**
  * Note Statless component
@@ -15,12 +15,10 @@ const Note = (props) => ( <li>
         <p>{props.content}</p>
 
 <p className="tools">
-        <button className="btn-danger btn btn-sm trash">
+        <button className="btn-danger btn btn-sm trash" onClick={()=>props.handleRemove(props.idnote)}>
             <Glyphicon glyph="trash"/>
         </button>
-        <button className="btn-default btn btn-sm trash">
-            <Glyphicon glyph="pencil"/>
-        </button>
+
 
 </p>
     </div>

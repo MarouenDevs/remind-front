@@ -1,106 +1,135 @@
 import React, {Component} from 'react';
 import PageHeader from "react-bootstrap/es/PageHeader";
 import Note from "../components/Note";
-import FormGroup from "react-bootstrap/es/FormGroup";
-import FormControl from "react-bootstrap/es/FormControl";
 import Button from "react-bootstrap/es/Button";
-import Form from "react-bootstrap/es/Form";
-import Glyphicon from "react-bootstrap/es/Glyphicon";
 import AddNote from "../components/AddNote";
-
+import {getNotes, postNote, deleteNote, searchNotes} from '../api/note';
+import Loader from 'react-loaders'
+import {Form, Text} from "react-form";
 
 class Dashbord extends Component {
     constructor(props) {
         super(props);
-        const d = new Date();
+
         this.state = {
             show: false,
-            notes: [{
-                id: 1,
-                title: "title 1",
-                content: "my content 1",
-                updateAt: d.toDateString(),
-                color: 'lazur',
-            },
-                {
-                    id: 2,
-                    title: "title 1",
-                    content: "my content 1",
-                    updateAt: d.toDateString(),
-                    color: 'red',
-
-                },
-                {
-                    id: 4,
-                    title: "title 1",
-                    content: "my content 1",
-                    updateAt: d.toDateString(),
-                    color: 'red',
-
-                },
-                {
-                    id: 5,
-                    title: "title 1",
-                    content: "my content 1",
-                    updateAt: d.toDateString(),
-                    color: 'yellow',
-
-                }]
+            notes: [],
         }
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
+        this.handleAddNote = this.handleAddNote.bind(this);
+        this.handleRemove = this.handleRemove.bind(this);
+    }
 
+    refresh() {
+        getNotes().then((data) => {
+                this.setState({show: false, notes: data.data});
 
+            }
+        ).catch((e) => {
+
+            alert("Erreur connect serveur");
+        });
     }
 
     componentWillMount() {
+        getNotes().then((data) => {
+                this.setState({show: false, notes: data.data});
 
+            }
+        ).catch((e) => {
+
+            alert("Erreur connect serveur");
+        });
     }
 
     handleClose() {
-        this.setState({ show: false });
+        this.setState({show: false});
     }
 
     handleShow() {
-        this.setState({ show: true });
+        this.setState({show: true});
+    }
+
+    async handleAddNote(values) {
+        try {
+            const note = await postNote(values);
+            let notes = this.state.notes;
+            notes.push(note.data)
+            this.setState({show: false, notes: notes});
+        } catch (e) {
+            alert("Erreur connect serveur");
+        }
+
+
+    }
+
+    async handleSearch(values) {
+        try {
+            if (values['search'] && values['search'] !== '') {
+                const notes = await searchNotes(values['search']);
+                this.setState({show: false, notes: notes.data});
+            }
+        } catch (e) {
+            alert("Erreur connect serveur");
+        }
+
+    }
+
+    async handleRemove(key) {
+        try {
+            await deleteNote(key);
+            this.refresh();
+
+        } catch (e) {
+            alert("Erreur connect serveur");
+        }
+
+
     }
 
     render() {
 
         return (
             <div className="container-fluid">
-
+                <Form validate={this.validateSearch} onSubmit={submittedValues => this.handleSearch(submittedValues)}>
+                    {formApi => (
+                        <form onSubmit={formApi.submitForm} id="form1">
+                            <div className="form-group">
+                                <Text field="search" id="search" className="form-control"/>
+                            </div>
+                            <button type="submit" className="btn btn-default">look</button>
+                        </form>
+                    )}
+                </Form>
                 <PageHeader>
                     Mes notes
-                    <Form inline>
-                        <FormGroup>
-                            <FormControl type="text" placeholder="Recherche "/>
-                        </FormGroup>{' '}
-                        <Button type="submit">look</Button>
-                    </Form>
 
 
                 </PageHeader>
 
                 <div className="row">
-                    <Button bsStyle="success" onClick={()=>{this.handleShow()}}>Add Note</Button>
+                    <Button bsStyle="success" onClick={() => {
+                        this.handleShow()
+                    }}>Add Note</Button>
                 </div>
                 <br/>
                 <div className="col-md-12">
                     <div className="row">
                         <ul className="notes">
 
-                            {this.state.notes.map((note) => (
-                                <Note key={note.id} title={note.title} content={note.content} color={note.color}
-                                      updateAt={note.updateAt}/>))}
+                            {this.state.notes ? this.state.notes.map((note) => (
+                                <Note handleRemove={this.handleRemove} key={note._id} idnote={note._id}
+                                      title={note.title} content={note.content} color={note.color}
+                                      updateAt={note.updateAt}/>)) : <Loader type="line-scale" active/>}
 
 
                         </ul>
                     </div>
-
+                    {this.state.notes.length ===0 ? (<h4>no notes found</h4>) : ''}
 
                 </div>
-                <AddNote  show={this.state.show} handleClose={this.handleClose}/>
+                <AddNote show={this.state.show} handleClose={this.handleClose} handleAddNote={this.handleAddNote}/>
             </div>
         );
     }
