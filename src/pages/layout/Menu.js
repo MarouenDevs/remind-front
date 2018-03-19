@@ -3,6 +3,7 @@ import { Nav, Navbar, NavItem } from "react-bootstrap";
 
 
 
+
 class Menu extends Component {
 
 
@@ -22,10 +23,6 @@ class Menu extends Component {
                         <NavItem eventKey={1} href="/">
                             Notes
                         </NavItem>
-                        <NavItem eventKey={2} href="/archives">
-                            Archive
-                        </NavItem>
-
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>

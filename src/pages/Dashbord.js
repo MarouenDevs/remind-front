@@ -3,18 +3,28 @@ import PageHeader from "react-bootstrap/es/PageHeader";
 import Note from "../components/Note";
 import Button from "react-bootstrap/es/Button";
 import AddNote from "../components/AddNote";
-import {getNotes, postNote, deleteNote, searchNotes} from '../api/note';
+
 import Loader from 'react-loaders'
 import {Form, Text} from "react-form";
+import {request as getNotes} from "../reducers/notes.reducer";
+import {connect} from "react-redux";
 
+
+
+const mapStateToProps = (state)=> ({
+    notes: state.notes.data,
+});
+const mapDistpathToProps = (dispatch)=> ({
+
+    loadNotes: ()=>(dispatch(getNotes())),
+
+})
 class Dashbord extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             show: false,
-            notes: [],
-        }
+        };
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleAddNote = this.handleAddNote.bind(this);
@@ -33,14 +43,8 @@ class Dashbord extends Component {
     }
 
     componentWillMount() {
-        getNotes().then((data) => {
-                this.setState({show: false, notes: data.data});
 
-            }
-        ).catch((e) => {
-
-            alert("Erreur connect serveur");
-        });
+        this.props.loadNotes();
     }
 
     handleClose() {
@@ -52,7 +56,7 @@ class Dashbord extends Component {
     }
 
     async handleAddNote(values) {
-        try {
+       /* try {
             const note = await postNote(values);
             let notes = this.state.notes;
             notes.push(note.data)
@@ -60,12 +64,12 @@ class Dashbord extends Component {
         } catch (e) {
             alert("Erreur connect serveur");
         }
-
+*/
 
     }
 
     async handleSearch(values) {
-        try {
+        /*try {
             if (values['search'] && values['search'] !== '') {
                 const notes = await searchNotes(values['search']);
                 this.setState({show: false, notes: notes.data});
@@ -73,11 +77,12 @@ class Dashbord extends Component {
         } catch (e) {
             alert("Erreur connect serveur");
         }
+        */
 
     }
 
     async handleRemove(key) {
-        try {
+      /*  try {
             await deleteNote(key);
             this.refresh();
 
@@ -85,11 +90,10 @@ class Dashbord extends Component {
             alert("Erreur connect serveur");
         }
 
-
+*/
     }
 
     render() {
-
         return (
             <div className="container-fluid">
                 <Form validate={this.validateSearch} onSubmit={submittedValues => this.handleSearch(submittedValues)}>
@@ -118,7 +122,7 @@ class Dashbord extends Component {
                     <div className="row">
                         <ul className="notes">
 
-                            {this.state.notes ? this.state.notes.map((note) => (
+                            {this.props.notes ? this.props.notes.map((note) => (
                                 <Note handleRemove={this.handleRemove} key={note._id} idnote={note._id}
                                       title={note.title} content={note.content} color={note.color}
                                       updateAt={note.updateAt}/>)) : <Loader type="line-scale" active/>}
@@ -126,7 +130,7 @@ class Dashbord extends Component {
 
                         </ul>
                     </div>
-                    {this.state.notes.length ===0 ? (<h4>no notes found</h4>) : ''}
+                    {this.props.notes && this.props.notes.length ===0 ? (<h4>no notes found</h4>) : ''}
 
                 </div>
                 <AddNote show={this.state.show} handleClose={this.handleClose} handleAddNote={this.handleAddNote}/>
@@ -135,4 +139,4 @@ class Dashbord extends Component {
     }
 }
 
-export default Dashbord;
+export default connect(mapStateToProps,mapDistpathToProps)(Dashbord);
