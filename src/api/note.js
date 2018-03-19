@@ -18,7 +18,7 @@ const postNote = (data) => {
 };
 
 const deleteNote = (data) => {
-    return axios.delete(`${config.apiUrl}/notes/delete/${data}`,);
+    return axios.delete(`${config.apiUrl}/notes/delete/${data.id}`,);
 
 };
 

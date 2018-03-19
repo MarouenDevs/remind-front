@@ -1,8 +1,10 @@
 import {fork} from 'redux-saga/effects'
-import notesFetchSaga from './notes.saga';
+import {notesFetchSaga, notesDeleteSaga, notesAddSaga} from './notes.saga';
 
 const sagas = [
     notesFetchSaga,
+    notesDeleteSaga,
+    notesAddSaga
 ]
 
 function* rootSaga() {

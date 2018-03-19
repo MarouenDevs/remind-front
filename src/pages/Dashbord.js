@@ -6,7 +6,7 @@ import AddNote from "../components/AddNote";
 
 import Loader from 'react-loaders'
 import {Form, Text} from "react-form";
-import {request as getNotes} from "../reducers/notes.reducer";
+import {request as getNotes, removeRequest, addRequest} from "../reducers/notes.reducer";
 import {connect} from "react-redux";
 
 
@@ -17,6 +17,8 @@ const mapStateToProps = (state)=> ({
 const mapDistpathToProps = (dispatch)=> ({
 
     loadNotes: ()=>(dispatch(getNotes())),
+    deleteNote: (key)=>(dispatch(removeRequest({id:key}))),
+    addNote: (data)=>(dispatch(addRequest(data))),
 
 })
 class Dashbord extends Component {
@@ -55,16 +57,9 @@ class Dashbord extends Component {
         this.setState({show: true});
     }
 
-    async handleAddNote(values) {
-       /* try {
-            const note = await postNote(values);
-            let notes = this.state.notes;
-            notes.push(note.data)
-            this.setState({show: false, notes: notes});
-        } catch (e) {
-            alert("Erreur connect serveur");
-        }
-*/
+     handleAddNote(values) {
+         this.props.addNote(values);
+         this.setState({show: false});
 
     }
 
@@ -81,16 +76,9 @@ class Dashbord extends Component {
 
     }
 
-    async handleRemove(key) {
-      /*  try {
-            await deleteNote(key);
-            this.refresh();
+     handleRemove(key) {
+     this.props.deleteNote(key);
 
-        } catch (e) {
-            alert("Erreur connect serveur");
-        }
-
-*/
     }
 
     render() {
